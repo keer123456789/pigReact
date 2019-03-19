@@ -59,6 +59,19 @@ const pigstylist = () => {
     return resp.data;
   });
 };
+//增加权限
+const addPower = (value) => {
+  return post('http://127.0.0.1:8080/addPower',{
+    data:value
+  });
+};
+//增加权限
+const getPower = () => {
+  return get('http://127.0.0.1:8080/getPower').then((resp) => {
+    return resp.data;
+  });
+};
+
 // mock
 const login = (value) => {
   cookie.save('account', value.account);
@@ -80,4 +93,6 @@ export default {
   showpiglist,
   addPigsty,
   pigstylist,
+  addPower,
+  getPower,
 };

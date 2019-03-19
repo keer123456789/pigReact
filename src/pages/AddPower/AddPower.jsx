@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import CreateActivityForm from '../AddPig/components/CreateActivityForm';
+import CreateActivityForm from './components/CreateActivityForm';
 
-export default class AddPig extends Component {
-  static displayName = 'AddPig';
+export default class AddPower extends Component {
+  static displayName = 'AddPower';
 
   constructor(props) {
     super(props);
@@ -11,7 +11,7 @@ export default class AddPig extends Component {
 
   render() {
     return (
-      <div className="add-pig-page">
+      <div className="add-power-page">
         <CreateActivityForm hideDialog={this.props.hideDialog} />
       </div>
     );
