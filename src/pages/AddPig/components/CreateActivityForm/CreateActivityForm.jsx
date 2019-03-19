@@ -25,8 +25,8 @@ export default class CreateActivityForm extends Component {
       dialog: false,
       pigstylist: [],
       value: {
-        ERC721ID: Math.floor((Math.random() * ((9999999999999 - 1000000000000) + 1)) + 1000000000000),
-        earId: new Date().getTime(),
+        ERC721ID: Math.floor((Math.random() * ((9999999999999 - 1000000000000) + 1)) + 1000000000000).toString(),
+        earId: new Date().getTime().toString(),
         breed: '',
         column: '',
         ringNumber: '',

@@ -13,13 +13,15 @@ const addPig = (value) => {
     data: value,
   });
 };
-
+//快查中心列表，没有721ID
 const checkSelect = () => {
-  return get('http://172.16.1.170:8080/getAllPig');
+  return get('http://127.0.0.1:8080/getAllPig');
 };
 // 显示猪的详情
 const showDetail = (id) => {
-  return get(`http://172.16.1.170:8080/getPigInfo/${id}`);
+  return get(`http://127.0.0.1:8080/getPigInfo/${id}`).then((resp)=>{
+    return resp.data[0];
+  });
 };
 // 显示健康信息
 const showHealthMin = (id) => {
@@ -30,7 +32,9 @@ const showHealthMin = (id) => {
 
 
 const showpiglist = (id) => {
-  return get(`http://172.16.1.170:8080/getPigList/${id}`);
+  return get(`http://127.0.0.1:8080/getPigList/${id}`).then((resp)=>{
+    return resp.data;
+  });
 };
 // 显示猪舍信息
 const pigsty = () => {

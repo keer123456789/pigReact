@@ -22,6 +22,7 @@ export default class TrendChart extends Component {
   }
   componentWillMount = async () => {
     const result = await showpiglist(this.state.id);
+    console.log(result);
     this.setState({
       value: result,
     });

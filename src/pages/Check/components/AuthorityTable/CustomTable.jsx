@@ -17,7 +17,7 @@ export default class Home extends Component {
   componentWillMount = async () => {
     const result = await checkSelect();
     this.setState({
-      dataSource: result,
+      dataSource: result.data,
     });
   }
   see = (index) => {
