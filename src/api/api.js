@@ -65,12 +65,25 @@ const addPower = (value) => {
     data:value
   });
 };
-//增加权限
+
+//获得权限
 const getPower = () => {
   return get('http://127.0.0.1:8080/getPower').then((resp) => {
     return resp.data;
   });
 };
+
+const fixPower = (value) =>{
+  return post('http://127.0.0.1:8080/fixPower',{
+    data:value
+  });
+}
+
+const deletePower = (id) =>{
+  return get(`http://127.0.0.1:8080/deletePower/${id}`).then((resp) =>{
+    return resp.data
+  });
+}
 
 // mock
 const login = (value) => {
@@ -95,4 +108,6 @@ export default {
   pigstylist,
   addPower,
   getPower,
+  fixPower,
+  deletePower,
 };

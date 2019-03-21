@@ -12,7 +12,7 @@ import Row from 'react-bootstrap/es/Row';
 import Col from 'react-bootstrap/es/Col';
 
 
-const { getPower, addPower } = Operation;
+const { getPower, addPower,deletePower,fixPower } = Operation;
 
 
 export default class Home extends Component {
@@ -71,7 +71,23 @@ export default class Home extends Component {
       if (error) {
         // 处理表单报错
       } else {
-        const result = await addPower(value);
+        console.log(value);
+        value.powerId=this.state.powerId;
+        const result = await fixPower(value);
+        console.log(result);
+        if (result.message === 'success') {
+          window.location.reload();
+        }
+      }
+    });
+  };
+
+  delete = () => {
+    this.formRef.validateAll(async (error, value) => {
+      if (error) {
+        // 处理表单报错
+      } else {
+        const result = await deletePower(value.powerId);
         console.log(result);
         if (result.message === 'success') {
           window.location.reload();
@@ -124,9 +140,12 @@ export default class Home extends Component {
                 <div>
                   <Row style={styles.formItem}>
                     <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      权限号      ：{this.state.powerId}
-                    </Col>
+                      权限号:
 
+                    <IceFormBinder name="powerId" >
+                      <Input style={{ width: '40%' }} value={this.state.powerId} />
+                    </IceFormBinder>
+                    </Col>
                   </Row>
                   <Row style={styles.formItem}>
                     <Col xxs="6" s="2" l="2" style={styles.formLabel}>
@@ -136,7 +155,7 @@ export default class Home extends Component {
                         required
                         message="权限名称必须填写"
                       >
-                        <Input style={{ width: '40%' }} value={this.state.powerName}/>
+                        <Input style={{ width: '40%' }} placeholder={this.state.powerName} />
                       </IceFormBinder>
                       <IceFormError name="powerName"/>
                     </Col>
@@ -150,7 +169,7 @@ export default class Home extends Component {
                         required
                         message="说明必须填写"
                       >
-                        <Input style={{ width: '40%' }} value={this.state.powerInfo}/>
+                        <Input style={{ width: '40%' }} placeholder={this.state.powerInfo}/>
                       </IceFormBinder>
                       <IceFormError name="powerInfo"/>
                     </Col>
@@ -164,7 +183,7 @@ export default class Home extends Component {
                       <Button type="primary" onClick={this.submit}>
                         保存
                       </Button>
-                      <Button style={styles.deleteBtn} type="primary" onClick={this.submit}>
+                      <Button style={styles.deleteBtn} type="primary" onClick={this.delete}>
                         删除
                       </Button>
                       <Button style={styles.resetBtn} onClick={this.reset}>

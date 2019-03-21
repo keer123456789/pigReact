@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dialog, Button } from '@icedesign/base';
-import AddPig from '../../../AddPig';
+import AddUser from '../../../AddUser';
 import './main.css';
 
 export default class TableFilter extends Component {
@@ -26,21 +26,21 @@ export default class TableFilter extends Component {
   render() {
     return (
       <div style={styles.tableFilter}>
-        <div style={styles.title}>后备公猪区</div>
+        <div style={styles.title}>用户管理</div>
         <Button type="primary" style={styles.submitButton} onClick={() => { this.addpig(); }}>
-          新增公猪
+          新增用户
         </Button>
         <Dialog
           className="simple-form-dialog"
           style={{ width: '1000px' }}
           autoFocus
           footerAlign="center"
-          title="新增公猪"
+          title="新增用户"
           onClose={this.hideDialog}
           isFullScreen
           visible={this.state.dialog}
         >
-          <AddPig hideDialog={this.hideDialog} value="12345" />
+          <AddUser hideDialog={this.hideDialog} value="12345" />
         </Dialog>
       </div>
     );

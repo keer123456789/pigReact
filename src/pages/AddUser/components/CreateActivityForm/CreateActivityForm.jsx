@@ -12,9 +12,9 @@ import {
 } from '@icedesign/base';
 import Operation from '../../../../api/api';
 
-import Load from '../../../load';
 
-const { addPig, pigstylist } = Operation;
+
+const { addPower } = Operation;
 const { Row, Col } = Grid;
 export default class CreateActivityForm extends Component {
   static displayName = 'CreateActivityForm';
@@ -22,24 +22,14 @@ export default class CreateActivityForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dialog: false,
-      pigstylist: [],
       value: {
-        ERC721ID: Math.floor((Math.random() * ((9999999999999 - 1000000000000) + 1)) + 1000000000000).toString(),
-        earId: new Date().getTime().toString(),
-        breed: '',
-        column: '',
-        ringNumber: '',
-        matingWeek: '',
-        remarks: '',
+        address: '',
+        userName: '',
+        userId:'',
+        userFId:'',
+        status:'',
       },
     };
-  }
-  componentWillMount = async () => {
-    const result = await pigstylist();
-    this.setState({
-      pigstylist: result,
-    });
   }
   onFormChange = (value) => {
     this.setState({
@@ -50,14 +40,11 @@ export default class CreateActivityForm extends Component {
   reset = () => {
     this.setState({
       value: {
-        ERC721ID: this.state.value.ERC721ID,
-        earId: this.state.value.earId,
-        breed: '',
-        column: '',
-        ringNumber: '',
-        matingWeek: '',
-        remarks: '',
-        pigstyId: '',
+        address: '',
+        userName: '',
+        userId:'',
+        userFId:'',
+        status:'',
       },
     });
   };
@@ -68,37 +55,14 @@ export default class CreateActivityForm extends Component {
       if (error) {
         // 处理表单报错
       } else {
-        const fromvalue = value;
-        fromvalue.pigstyId = athis.dataselect.value;
-        console.log(fromvalue)
-        const result = await addPig(fromvalue);
+        const result = await addPower(value);
         if (result.message === 'success') {
-          athis.setState({
-            dialog: true,
-          });
-          setTimeout(() => {
-            athis.setState({
-              dialog: false,
-            });
-            window.location.reload();
-          }, 5000);
+          window.location.reload();
         }
       }
     });
   };
-  hideDialog = () => {
-    this.setState({
-      dialog: false,
-    });
-  };
-  operation = () => {
-    const operation = [];
-    const athis = this;
-    for (let i = 0; i < this.state.pigstylist.length; i++) {
-      operation.push(<option value={athis.state.pigstylist[i]} key={athis.state.pigstylist[i]}>{athis.state.pigstylist[i]}</option>);
-    }
-    return operation;
-  }
+
   render() {
     return (
       <div className="create-activity-form">
@@ -114,96 +78,63 @@ export default class CreateActivityForm extends Component {
             <div>
               <Row style={styles.formItem}>
                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  耳号：
+                  用户地址：
+                </Col>
+                <Col s="12" l="10">
+                  <IceFormBinder
+                    name="powerId"
+                    required
+                    message="用户地址必须填写"
+                  >
+                    <Input style={{ width: '100%' }} />
+                  </IceFormBinder>
+                  <IceFormError name="powerId" />
                 </Col>
 
-                <Col s="12" l="10">
-                  {this.state.value.earId}
-                </Col>
               </Row>
               <Row style={styles.formItem}>
                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  品种：
+                  用户名称：
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="breed"
+                    name="powerName"
                     required
-                    message="品种必须填写"
+                    message="用户名称必须填写"
                   >
                     <Input style={{ width: '100%' }} />
                   </IceFormBinder>
-                  <IceFormError name="breed" />
+                  <IceFormError name="powerName" />
                 </Col>
               </Row>
               <Row style={styles.formItem}>
                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  猪舍号：
-                </Col>
-                <Col s="12" l="10">
-                  <select  ref={e => this.dataselect = e} >
-                    {this.operation()}
-                  </select>
-                  <IceFormError name="pigstyId" />
-                </Col>
-              </Row>
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  栋栏：
+                  用户ID：
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="column"
+                    name="powerInfo"
                     required
-                    message="栋栏必须填写"
+                    message="用户ID必须填写"
                   >
                     <Input style={{ width: '100%' }} />
                   </IceFormBinder>
-                  <IceFormError name="column" />
+                  <IceFormError name="powerInfo" />
                 </Col>
               </Row>
               <Row style={styles.formItem}>
                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  圈号：
+                  上级用户：
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="ringNumber"
+                    name="powerInfo"
                     required
-                    message="圈号必须填写"
+                    message="上级用户必须填写"
                   >
                     <Input style={{ width: '100%' }} />
                   </IceFormBinder>
-                  <IceFormError name="ringNumber" />
-                </Col>
-              </Row>
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  本周配种：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder
-                    name="matingWeek"
-                    required
-                    message="本周配种必须填写"
-                  >
-                    <Input style={{ width: '100%' }} />
-                  </IceFormBinder>
-                  <IceFormError name="matingWeek" />
-                </Col>
-              </Row>
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  备注：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder
-                    name="remarks"
-                    message="备注可选"
-                  >
-                    <Input style={{ width: '100%' }} />
-                  </IceFormBinder>
-                  <IceFormError name="remarks" />
+                  <IceFormError name="powerInfo" />
                 </Col>
               </Row>
               <Row style={styles.btns}>
@@ -222,17 +153,6 @@ export default class CreateActivityForm extends Component {
             </div>
           </IceFormBinderWrapper>
         </IceContainer>
-        <Dialog
-          className="simple-form-dialog"
-          style={{ width: '100%', padding: 0, height: '100%', opacity: '0.6', background: 'black' }}
-          autoFocus
-          footerAlign="center"
-          onClose={this.hideDialog}
-          isFullScreen
-          visible={this.state.dialog}
-        >
-          <Load />
-        </Dialog>
       </div>
     );
   }

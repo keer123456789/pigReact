@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { Table, Dialog, Button } from '@icedesign/base';
+import { Table, Dialog, Button, Input } from '@icedesign/base';
 import IceIcon from '@icedesign/icon';
 import Operation from '../../../../api/api';
-
-const QRCode = require('qrcode.react');
+import IceContainer from '../../../PowerManager/components/AuthorityTable/CustomTable';
+import {
+  FormBinder as IceFormBinder,
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
+import Row from 'react-bootstrap/es/Row';
+import Col from 'react-bootstrap/es/Col';
 
 const { displaypig } = Operation;
 
@@ -16,9 +22,15 @@ export default class Home extends Component {
     this.state = {
       dataSource: [],
       dialog: false,
-      earId: '',
+      userId: '',
+      address: '',
+      userName: '',
+      userFName: '',
+      roleName: '',
+      status: '',
     };
   }
+
   componentWillMount = async () => {
     const result = await displaypig();
     const athis = this;
@@ -27,16 +39,32 @@ export default class Home extends Component {
         dataSource: result,
       });
     }
-  }
+  };
 
   printf = (index) => {
-    const id = this.state.dataSource[index].erc721ID.toString();
-    this.setState({ dialog: true, earId: id });
-  }
+    const id = this.state.dataSource[index].userId.toString();
+    const name = this.state.dataSource[index].userName.toString();
+    const fName = this.state.dataSource[index].userFName.toString();
+    const address = this.state.dataSource[index].address.toString();
+    const status = this.state.dataSource[index].status.toString();
+    const roleName = this.state.dataSource[index].roleName.toString();
+    this.setState({
+      dialog: true,
+      userId: id,
+      userName: name,
+      userFName: fName,
+      address: address,
+      status: status,
+      roleName: roleName,
+
+    });
+  };
   renderOper = (record, index) => {
     return (
       <div style={styles.oper}>
-        <IceIcon size="small" type="eye" style={styles.editIcon} onClick={() => { this.printf(index); }} />
+        <IceIcon size="small" type="eye" style={styles.editIcon} onClick={() => {
+          this.printf(index);
+        }}/>
       </div>
     );
   };
@@ -45,11 +73,20 @@ export default class Home extends Component {
       dialog: false,
     });
   };
-  download = () => {
-    const canvas = document.querySelector('.HpQrcode > canvas');
-    this.downloadRef.href = canvas.toDataURL();
-    this.downloadRef.download = `${this.state.earId}.png`;
-  }
+  submit = () => {
+    this.formRef.validateAll(async (error, value) => {
+      if (error) {
+        // 处理表单报错
+      } else {
+        const result = await addPower(value);
+        console.log(result);
+        if (result.message === 'success') {
+          window.location.reload();
+        }
+      }
+    });
+  };
+
   render() {
     const { dataSource } = this.state;
     return (
@@ -60,17 +97,16 @@ export default class Home extends Component {
           hasBorder={false}
           className="custom-table"
         >
-          <Table.Column width={200} title="链码" dataIndex="erc721ID" />
-          <Table.Column width={200} title="耳号" dataIndex="earId" />
-          <Table.Column width={100} title="品种" dataIndex="breed" />
-          <Table.Column width={100} title="栋栏" dataIndex="column" />
-          <Table.Column width={100} title="圈号" dataIndex="ringNumber" />
-          <Table.Column width={100} title="本周配种" dataIndex="matingWeek" />
-          <Table.Column width={100} title="备注" dataIndex="remarks" />
+          <Table.Column width={200} title="地址" dataIndex="address"/>
+          <Table.Column width={100} title="用户名" dataIndex="userName"/>
+          <Table.Column width={100} title="用户ID" dataIndex="userId"/>
+          <Table.Column width={100} title="用户角色" dataIndex="roleName"/>
+          <Table.Column width={100} title="上级用户" dataIndex="userFName"/>
+          <Table.Column width={100} title="用户状态" dataIndex="status"/>
           {/* <Table.Column width={100} title="操作" dataIndex="operation" /> */}
           <Table.Column
             width={100}
-            title="查看二维码"
+            title="修改用户信息"
             cell={this.renderOper}
             align="center"
           />
@@ -80,23 +116,102 @@ export default class Home extends Component {
           style={{ width: '200px' }}
           autoFocus
           footerAlign="center"
-          title="查看二维码"
+          title="修改用户信息"
           onClose={this.hideDialog}
           isFullScreen
           visible={this.state.dialog}
         >
-          <div className="HpQrcode">
-            <QRCode size={150} value={this.state.earId} />
-          </div>
-          <div style={{ marginTop: '20px' }}>
-            <Button type="primary" onClick={this.download}>
-              <a ref={(ref) => { this.downloadRef = ref; }}>
-                下载
-              </a>
-            </Button>
-            <Button onClick={this.hideDialog}>
-              关闭
-            </Button>
+          <div className="create-activity-form">
+            <IceContainer style={styles.container}>
+              <IceFormBinderWrapper
+                ref={(formRef) => {
+                  this.formRef = formRef;
+                }}
+                value={this.state.value}
+                onChange={this.onFormChange}
+              >
+                <div>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      用户地址：{this.state.roleName}
+                    </Col>
+
+                  </Row>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      用户角色：
+                      <IceFormBinder
+                        name="roleId"
+                        required
+                        message="用户角色必须填写"
+                      >
+                        <Input style={{ width: '40%' }} value={this.state.roleId}/>
+                      </IceFormBinder>
+                      <IceFormError name="powerName"/>
+                    </Col>
+
+                  </Row>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      用户名：
+                      <IceFormBinder
+                        name="fName"
+                        required
+                        message="用户名必须填写"
+                      >
+                        <Input style={{ width: '40%' }} value={this.state.roleFName}/>
+                      </IceFormBinder>
+                      <IceFormError name="fName"/>
+                    </Col>
+
+                  </Row>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      用户ID：
+                      <IceFormBinder
+                        name="fName"
+                        required
+                        message="用户ID必须填写"
+                      >
+                        <Input style={{ width: '40%' }} value={this.state.roleFName}/>
+                      </IceFormBinder>
+                      <IceFormError name="fName"/>
+                    </Col>
+                  </Row>
+                  <Row style={styles.formItem}>
+                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                    上级用户：
+                    <IceFormBinder
+                      name="fName"
+                      required
+                      message="上级用户必须填写"
+                    >
+                      <Input style={{ width: '40%' }} value={this.state.roleFName}/>
+                    </IceFormBinder>
+                    <IceFormError name="fName"/>
+                  </Col>
+                </Row>
+
+
+                  <Row style={styles.btns}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      {' '}
+                    </Col>
+                    <Col s="12" l="10">
+                      <Button type="primary" onClick={this.submit}>
+                        保存
+                      </Button>
+                      <Button style={styles.deleteBtn} type="primary" onClick={this.submit}>
+                        删除
+                      </Button>
+                      <Button style={styles.resetBtn} onClick={this.reset}>
+                        重置
+                      </Button>
+                    </Col>
+                  </Row>
+                </div>
+              </IceFormBinderWrapper>
+            </IceContainer>
           </div>
         </Dialog>
       </div>
@@ -127,5 +242,25 @@ const styles = {
   },
   stateText: {
     color: '#28a745',
+  },
+  container: {
+    paddingBottom: 0,
+  },
+  formItem: {
+    height: '28px',
+    lineHeight: '28px',
+    marginBottom: '25px',
+  },
+  formLabel: {
+    textAlign: 'left',
+  },
+  btns: {
+    margin: '25px 0',
+  },
+  resetBtn: {
+    marginLeft: '20px',
+  },
+  deleteBtn: {
+    marginLeft: '20px',
   },
 };

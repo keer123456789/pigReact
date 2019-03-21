@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { Table, Dialog, Button } from '@icedesign/base';
+import { Table, Dialog, Button, Input } from '@icedesign/base';
 import IceIcon from '@icedesign/icon';
 import Operation from '../../../../api/api';
+import IceContainer from '../../../PowerManager/components/AuthorityTable/CustomTable';
+import {
+  FormBinder as IceFormBinder,
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
+import Row from 'react-bootstrap/es/Row';
+import Col from 'react-bootstrap/es/Col';
 
-const QRCode = require('qrcode.react');
+
 
 const { displaypig } = Operation;
 
@@ -16,7 +24,9 @@ export default class Home extends Component {
     this.state = {
       dataSource: [],
       dialog: false,
-      earId: '',
+      roleId: '',
+      roleName:'',
+      roleFName:'',
     };
   }
   componentWillMount = async () => {
@@ -30,8 +40,15 @@ export default class Home extends Component {
   }
 
   printf = (index) => {
-    const id = this.state.dataSource[index].erc721ID.toString();
-    this.setState({ dialog: true, earId: id });
+    const id = this.state.dataSource[index].roleId.toString();
+    const name = this.state.dataSource[index].roleName.toString();
+    const fName = this.state.dataSource[index].roleFName.toString();
+    this.setState({
+      dialog: true,
+      roleId: id,
+      roleName:name,
+      roleFName:fName,
+    });
   }
   renderOper = (record, index) => {
     return (
@@ -45,11 +62,19 @@ export default class Home extends Component {
       dialog: false,
     });
   };
-  download = () => {
-    const canvas = document.querySelector('.HpQrcode > canvas');
-    this.downloadRef.href = canvas.toDataURL();
-    this.downloadRef.download = `${this.state.earId}.png`;
-  }
+  submit = () => {
+    this.formRef.validateAll(async (error, value) => {
+      if (error) {
+        // 处理表单报错
+      } else {
+        const result = await addPower(value);
+        console.log(result);
+        if (result.message === 'success') {
+          window.location.reload();
+        }
+      }
+    });
+  };
   render() {
     const { dataSource } = this.state;
     return (
@@ -60,43 +85,90 @@ export default class Home extends Component {
           hasBorder={false}
           className="custom-table"
         >
-          <Table.Column width={200} title="链码" dataIndex="erc721ID" />
-          <Table.Column width={200} title="耳号" dataIndex="earId" />
-          <Table.Column width={100} title="品种" dataIndex="breed" />
-          <Table.Column width={100} title="栋栏" dataIndex="column" />
-          <Table.Column width={100} title="圈号" dataIndex="ringNumber" />
-          <Table.Column width={100} title="本周配种" dataIndex="matingWeek" />
-          <Table.Column width={100} title="备注" dataIndex="remarks" />
+          <Table.Column width={300} title="角色名称" dataIndex="roleName" />
+          <Table.Column width={300} title="角色权限" dataIndex="roleId" />
+          <Table.Column width={300} title="上级角色" dataIndex="roleFName" />
           {/* <Table.Column width={100} title="操作" dataIndex="operation" /> */}
           <Table.Column
             width={100}
-            title="查看二维码"
+            title="修改权限"
             cell={this.renderOper}
             align="center"
           />
         </Table>
         <Dialog
           className="simple-form-dialog"
-          style={{ width: '200px' }}
+          style={{ width: '1000px' }}
           autoFocus
           footerAlign="center"
-          title="查看二维码"
+          title="修改权限"
           onClose={this.hideDialog}
           isFullScreen
           visible={this.state.dialog}
         >
-          <div className="HpQrcode">
-            <QRCode size={150} value={this.state.earId} />
-          </div>
-          <div style={{ marginTop: '20px' }}>
-            <Button type="primary" onClick={this.download}>
-              <a ref={(ref) => { this.downloadRef = ref; }}>
-                下载
-              </a>
-            </Button>
-            <Button onClick={this.hideDialog}>
-              关闭
-            </Button>
+          <div className="create-activity-form">
+            <IceContainer style={styles.container}>
+              <IceFormBinderWrapper
+                ref={(formRef) => {
+                  this.formRef = formRef;
+                }}
+                value={this.state.value}
+                onChange={this.onFormChange}
+              >
+                <div>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      角色名称      ：{this.state.roleName}
+                    </Col>
+
+                  </Row>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      角色权利：
+                      <IceFormBinder
+                        name="roleId"
+                        required
+                        message="角色权利必须填写"
+                      >
+                        <Input style={{ width: '40%' }} value={this.state.roleId}/>
+                      </IceFormBinder>
+                      <IceFormError name="powerName"/>
+                    </Col>
+
+                  </Row>
+                  <Row style={styles.formItem}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      上级角色：
+                      <IceFormBinder
+                        name="fName"
+                        required
+                        message="上级角色必须填写"
+                      >
+                        <Input style={{ width: '40%' }} value={this.state.roleFName}/>
+                      </IceFormBinder>
+                      <IceFormError name="fName"/>
+                    </Col>
+
+                  </Row>
+                  <Row style={styles.btns}>
+                    <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      {' '}
+                    </Col>
+                    <Col s="12" l="10">
+                      <Button type="primary" onClick={this.submit}>
+                        保存
+                      </Button>
+                      <Button style={styles.deleteBtn} type="primary" onClick={this.submit}>
+                        删除
+                      </Button>
+                      <Button style={styles.resetBtn} onClick={this.reset}>
+                        重置
+                      </Button>
+                    </Col>
+                  </Row>
+                </div>
+              </IceFormBinderWrapper>
+            </IceContainer>
           </div>
         </Dialog>
       </div>
@@ -127,5 +199,25 @@ const styles = {
   },
   stateText: {
     color: '#28a745',
+  },
+  container: {
+    paddingBottom: 0,
+  },
+  formItem: {
+    height: '28px',
+    lineHeight: '28px',
+    marginBottom: '25px',
+  },
+  formLabel: {
+    textAlign: 'left',
+  },
+  btns: {
+    margin: '25px 0',
+  },
+  resetBtn: {
+    marginLeft: '20px',
+  },
+  deleteBtn: {
+    marginLeft: '20px',
   },
 };
