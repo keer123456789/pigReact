@@ -13,7 +13,7 @@ export default class TableFilter extends Component {
     };
   }
 
-  addpig = () => {
+  addrole = () => {
     this.setState({
       dialog: true,
     });
@@ -27,7 +27,7 @@ export default class TableFilter extends Component {
     return (
       <div style={styles.tableFilter}>
         <div style={styles.title}>角色管理</div>
-        <Button type="primary" style={styles.submitButton} onClick={() => { this.addpig(); }}>
+        <Button type="primary" style={styles.submitButton} onClick={() => { this.addrole(); }}>
           新增角色
         </Button>
         <Dialog

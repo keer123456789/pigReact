@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import powerManager from './pages/PowerManager';
 import roleManager from './pages/RoleManager';
+import Register1 from './pages/Register1';
 import userManager from './pages/UserManager';
 
 const routerConfig = [
@@ -69,6 +70,10 @@ const routerConfig = [
     path: 'manager/user',
     layout: BasicLayout,
     component: userManager,
+  },
+  {
+    path: '/register',
+    component: Register1,
   },
   {
     path: '*',

@@ -97,6 +97,7 @@ export default class CreateActivityForm extends Component {
     for (let i = 0; i < this.state.pigstylist.length; i++) {
       operation.push(<option value={athis.state.pigstylist[i]} key={athis.state.pigstylist[i]}>{athis.state.pigstylist[i]}</option>);
     }
+    console.log(operation)
     return operation;
   }
   render() {

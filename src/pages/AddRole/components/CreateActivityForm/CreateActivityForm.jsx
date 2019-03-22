@@ -8,26 +8,33 @@ import {
 import {
   Input,
   Grid,
-  Button, Dialog,
+  Button, Dialog, Select,
 } from '@icedesign/base';
 import Operation from '../../../../api/api';
 
 
-
-const { addPower } = Operation;
+const { getAllPowerId,addRole } = Operation;
 const { Row, Col } = Grid;
 export default class CreateActivityForm extends Component {
   static displayName = 'CreateActivityForm';
   static defaultProps = {};
+
   constructor(props) {
     super(props);
     this.state = {
       value: {
         roleId: '',
         roleName: '',
-        roleFName:'',
+        roleFName: '',
       },
+      roleId:[]
     };
+  }
+  componentWillMount = async () => {
+    const result = await getAllPowerId();
+    this.setState({
+      roleId: result,
+    });
   }
   onFormChange = (value) => {
     this.setState({
@@ -40,7 +47,7 @@ export default class CreateActivityForm extends Component {
       value: {
         roleId: '',
         roleName: '',
-        roleFName:'',
+        roleFName: '',
       },
     });
   };
@@ -51,13 +58,26 @@ export default class CreateActivityForm extends Component {
       if (error) {
         // 处理表单报错
       } else {
-        const result = await addPower(value);
+
+        console.log(value);
+        const result = await addRole(value);
         if (result.message === 'success') {
           window.location.reload();
         }
       }
     });
   };
+
+
+  operation =  () => {
+    const operation = [];
+    const athis = this;
+    for (let i = 0; i < this.state.roleId.length; i++) {
+      operation.push({ label:athis.state.roleId[i] , value: athis.state.roleId[i]  });
+    }
+    return operation;
+  };
+
 
   render() {
     return (
@@ -78,13 +98,17 @@ export default class CreateActivityForm extends Component {
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="powerId"
-                    required
-                    message="权限号必须填写"
+                    name="roleId"
                   >
-                    <Input style={{ width: '100%' }} />
+                    <Select
+                      className="next-form-text-align"
+                      required
+                      style={{ width: '100%' }}
+                      message="请选择商品类型"
+                      dataSource={this.operation()}
+                    />
                   </IceFormBinder>
-                  <IceFormError name="powerId" />
+                  <IceFormError name="roleId"/>
                 </Col>
 
               </Row>
@@ -94,13 +118,13 @@ export default class CreateActivityForm extends Component {
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="powerName"
+                    name="roleName"
                     required
                     message="角色名称必须填写"
                   >
-                    <Input style={{ width: '100%' }} />
+                    <Input style={{ width: '100%' }}/>
                   </IceFormBinder>
-                  <IceFormError name="powerName" />
+                  <IceFormError name="roleName"/>
                 </Col>
               </Row>
               <Row style={styles.formItem}>
@@ -109,13 +133,13 @@ export default class CreateActivityForm extends Component {
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="powerInfo"
+                    name="roleFName"
                     required
                     message="上级角色必须填写"
                   >
-                    <Input style={{ width: '100%' }} />
+                    <Input style={{ width: '100%' }}/>
                   </IceFormBinder>
-                  <IceFormError name="powerInfo" />
+                  <IceFormError name="powerInfo"/>
                 </Col>
               </Row>
               <Row style={styles.btns}>

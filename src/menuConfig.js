@@ -62,6 +62,7 @@ const asideMenuConfig = [
     path: '/manager/user',
     icon: 'task',
   },
+
 ];
 
 export { headerMenuConfig, asideMenuConfig };

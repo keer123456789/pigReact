@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "该模板内置了丰富的区块，适用于资产管理类的系统，使用时需要根据需求进行删除和添加",
   "dependencies": {
+    "@alifd/next": "^1.13.9",
     "@antv/data-set": "^0.8.5",
     "@icedesign/base": "^0.2.5",
     "@icedesign/container": "^0.1.1",

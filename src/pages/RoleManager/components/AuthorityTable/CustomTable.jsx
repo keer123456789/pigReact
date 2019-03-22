@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Dialog, Button, Input } from '@icedesign/base';
+import { Table, Dialog, Button, Input, Select } from '@icedesign/base';
 import IceIcon from '@icedesign/icon';
 import Operation from '../../../../api/api';
-import IceContainer from '../../../PowerManager/components/AuthorityTable/CustomTable';
+import IceContainer from '@icedesign/container';
 import {
   FormBinder as IceFormBinder,
   FormBinderWrapper as IceFormBinderWrapper,
@@ -12,8 +12,7 @@ import Row from 'react-bootstrap/es/Row';
 import Col from 'react-bootstrap/es/Col';
 
 
-
-const { displaypig } = Operation;
+const { getAllRole, getAllPowerId ,changeRolePowerAndFName} = Operation;
 
 
 export default class Home extends Component {
@@ -25,19 +24,33 @@ export default class Home extends Component {
       dataSource: [],
       dialog: false,
       roleId: '',
-      roleName:'',
-      roleFName:'',
+      roleName: '',
+      roleFName: '',
+      powerId: [],
     };
   }
+
   componentWillMount = async () => {
-    const result = await displaypig();
+    const result = await getAllRole();
+    const powerID = await getAllPowerId();
     const athis = this;
+    console.log(powerID);
     if (result != null) {
       athis.setState({
         dataSource: result,
+        powerId: powerID,
       });
     }
-  }
+  };
+
+  operation = () => {
+    const operation = [];
+    const athis = this;
+    for (let i = 0; i < this.state.powerId.length; i++) {
+      operation.push({ label: athis.state.powerId[i], value: athis.state.powerId[i] });
+    }
+    return operation;
+  };
 
   printf = (index) => {
     const id = this.state.dataSource[index].roleId.toString();
@@ -46,14 +59,17 @@ export default class Home extends Component {
     this.setState({
       dialog: true,
       roleId: id,
-      roleName:name,
-      roleFName:fName,
+      roleName: name,
+      roleFName: fName,
     });
-  }
+
+  };
   renderOper = (record, index) => {
     return (
       <div style={styles.oper}>
-        <IceIcon size="small" type="eye" style={styles.editIcon} onClick={() => { this.printf(index); }} />
+        <IceIcon size="small" type="eye" style={styles.editIcon} onClick={() => {
+          this.printf(index);
+        }}/>
       </div>
     );
   };
@@ -67,7 +83,9 @@ export default class Home extends Component {
       if (error) {
         // 处理表单报错
       } else {
-        const result = await addPower(value);
+        value.roleName=this.state.roleName;
+        console.log(value);
+        const result = await changeRolePowerAndFName(value);
         console.log(result);
         if (result.message === 'success') {
           window.location.reload();
@@ -75,6 +93,7 @@ export default class Home extends Component {
       }
     });
   };
+
   render() {
     const { dataSource } = this.state;
     return (
@@ -85,9 +104,9 @@ export default class Home extends Component {
           hasBorder={false}
           className="custom-table"
         >
-          <Table.Column width={300} title="角色名称" dataIndex="roleName" />
-          <Table.Column width={300} title="角色权限" dataIndex="roleId" />
-          <Table.Column width={300} title="上级角色" dataIndex="roleFName" />
+          <Table.Column width={300} title="角色名称" dataIndex="roleName"/>
+          <Table.Column width={300} title="角色权限" dataIndex="roleId"/>
+          <Table.Column width={300} title="上级角色" dataIndex="roleFName"/>
           {/* <Table.Column width={100} title="操作" dataIndex="operation" /> */}
           <Table.Column
             width={100}
@@ -118,21 +137,27 @@ export default class Home extends Component {
                 <div>
                   <Row style={styles.formItem}>
                     <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      角色名称      ：{this.state.roleName}
+                      角色名称 ：
+                      <IceFormBinder name="roleName">
+                        <Input style={{ width: '40%' }} value={this.state.roleName}/>
+                      </IceFormBinder>
                     </Col>
 
                   </Row>
                   <Row style={styles.formItem}>
                     <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                       角色权利：
-                      <IceFormBinder
-                        name="roleId"
-                        required
-                        message="角色权利必须填写"
-                      >
-                        <Input style={{ width: '40%' }} value={this.state.roleId}/>
+                      <IceFormBinder name="roleId">
+                        <Select
+                          className="next-form-text-align"
+                          required
+                          placeholder={"权限只能增加，已有权限"+this.state.roleId}
+                          style={{ width: '80%' }}
+                          message="请选择商品类型"
+                          dataSource={this.operation()}
+                        />
                       </IceFormBinder>
-                      <IceFormError name="powerName"/>
+                      <IceFormError name="roleId"/>
                     </Col>
 
                   </Row>
@@ -144,7 +169,7 @@ export default class Home extends Component {
                         required
                         message="上级角色必须填写"
                       >
-                        <Input style={{ width: '40%' }} value={this.state.roleFName}/>
+                        <Input style={{ width: '40%' }} placeholder={this.state.roleFName}/>
                       </IceFormBinder>
                       <IceFormError name="fName"/>
                     </Col>
