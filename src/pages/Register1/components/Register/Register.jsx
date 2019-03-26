@@ -196,7 +196,7 @@ export default class Register extends Component {
               </Row>
 
               <Row style={styles.tips}>
-                <a href="/" style={styles.link}>
+                <a href="/#/login" style={styles.link}>
                   使用已有账户登录
                 </a>
               </Row>
