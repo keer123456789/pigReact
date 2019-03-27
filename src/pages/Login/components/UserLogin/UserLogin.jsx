@@ -7,7 +7,6 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 import IceIcon from '@icedesign/icon';
-import cookie from 'react-cookies';
 import './UserLogin.scss';
 import Operations from '../../../../api/api';
 
