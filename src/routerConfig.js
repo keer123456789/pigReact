@@ -11,10 +11,8 @@ import Pigsty from './pages/Pigsty';
 import PigstyDetail from './pages/PigstyDetail';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import powerManager from './pages/PowerManager';
-import roleManager from './pages/RoleManager';
 import Register1 from './pages/Register1';
-import userManager from './pages/UserManager';
+
 
 const routerConfig = [
   {
@@ -55,21 +53,6 @@ const routerConfig = [
     path: '/manage/company',
     layout: BasicLayout,
     component: Home,
-  },
-  {
-    path: 'manager/power',
-    layout: BasicLayout,
-    component: powerManager,
-  },
-  {
-    path: 'manager/role',
-    layout: BasicLayout,
-    component: roleManager,
-  },
-  {
-    path: 'manager/user',
-    layout: BasicLayout,
-    component: userManager,
   },
   {
     path: '/register',

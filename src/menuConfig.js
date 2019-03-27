@@ -47,21 +47,7 @@ const asideMenuConfig = [
     icon: 'task',
     children: [{ name: '后备公猪区', path: '/produce/show' }],
   },
-  {
-    name: '权限管理',
-    path: '/manager/power',
-    icon: 'task',
-  },
-  {
-    name: '角色管理',
-    path: '/manager/role',
-    icon: 'task',
-  },
-  {
-    name: '用户管理',
-    path: '/manager/user',
-    icon: 'task',
-  },
+
 ];
 
 export { headerMenuConfig, asideMenuConfig };

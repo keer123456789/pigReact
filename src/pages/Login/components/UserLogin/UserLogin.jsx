@@ -1,6 +1,6 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
-import { Input, Button, Grid } from '@icedesign/base';
+import { Input, Button, Grid, Upload } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -20,50 +20,50 @@ export default class UserLogin extends Component {
   static displayName = 'UserLogin';
   static propTypes = {};
   static defaultProps = {};
+
   constructor(props) {
     super(props);
     this.state = {
-      account: 'Admin',
-      password: 'admin',
-      part: 'enterprise',
-      value: {
-        account: undefined,
-        password: undefined,
-        part: undefined,
-      },
+      file:{}
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.part = this.part.bind(this);
-    this.account = this.account.bind(this);
-    this.password = this.password.bind(this);
   }
 
+ 
 
+  register = async () => {
+    window.location.href = `${window.location.origin}/#/register`;
+  }
   handleSubmit = async () => {
-    const result = await login(this.state);
-    if (result.message === 'success') {
-      cookie.save('status', '1');
-      window.location.href = `${window.location.origin}/#/`;
-    } else {
-      alert('登录失败');
-      cookie.save('status', '0');
-    }
+    this.formRef.validateAll(async (error, value) => {
+      if (error) {
+        // 处理表单报错
+      } else {
+        console.log(value);
+        value.address='0x'+this.state.file.address;
+        console.log(value);
+        const result = await login(value);
+        console.log(result);
+        if (result.message === 'success') {
+          window.location.href = `${window.location.origin}/#/`;
+        }else{
+
+        }
+      }
+    });
   };
-  part= (e) => {
-    this.setState({
-      part: e,
-    });
+
+  fileUpLoad =(e)=>{
+    const a=this;
+    console.log(e);
+    var reader = new FileReader();
+    reader.readAsText(e.target.files[0]);
+    reader.onload = function(e) {
+      a.setState({
+        file:JSON.parse(e.target.result)
+      });
+    }
   }
-  account= (e) => {
-    this.setState({
-      account: e,
-    });
-  }
-  password= (e) => {
-    this.setState({
-      password: e,
-    });
-  }
+
   render() {
     return (
       <div style={styles.userLogin} className="user-login">
@@ -75,29 +75,36 @@ export default class UserLogin extends Component {
         />
         <div style={styles.contentWrapper} className="content-wrapper">
           <h2 style={styles.slogan} className="slogan">
-            欢迎进入 <br /> 智能养猪管理系统
+            欢迎使用 <br /> 智能养猪管理系统
           </h2>
           <div style={styles.formContainer}>
             <h4 style={styles.formTitle}>登录</h4>
             <IceFormBinderWrapper
-              ref="form"
+              value={this.state.value}
+              onChange={this.formChange}
+              ref={(formRef) => {
+                this.formRef = formRef;
+              }}
             >
               <div style={styles.formItems}>
-                <Row style={styles.formItem}>
-                  <Col>
+              <Row style={styles.formItem}>
+                  <Col style={styles.row}>
                     <IceIcon
                       type="message"
                       size="small"
                       style={styles.inputIcon}
                     />
-                    <IceFormBinder name="part" required message="必填">
-                      <Input maxLength={20} placeholder="猪场企业" value={this.state.part} onChange={this.part} />
-                    </IceFormBinder>
+                      <input 
+                        type="file"
+                        accept="*.txt"
+                        required="required"
+                        message="必填"
+                        onChange={this.fileUpLoad}
+                      />
                   </Col>
-                  <Col>
-                    <IceFormError name="part" />
-                  </Col>
+
                 </Row>
+
                 <Row style={styles.formItem}>
                   <Col>
                     <IceIcon
@@ -106,7 +113,7 @@ export default class UserLogin extends Component {
                       style={styles.inputIcon}
                     />
                     <IceFormBinder name="account" required message="必填">
-                      <Input maxLength={20} placeholder="账号" value={this.state.account} onChange={this.account} />
+                      <Input maxLength={20} placeholder="用户名" />
                     </IceFormBinder>
                   </Col>
                   <Col>
@@ -122,7 +129,7 @@ export default class UserLogin extends Component {
                       style={styles.inputIcon}
                     />
                     <IceFormBinder name="password" required message="必填">
-                      <Input htmlType="password" placeholder="密码" value={this.state.password} onChange={this.password} />
+                      <Input htmlType="password" placeholder="密码" />
                     </IceFormBinder>
                   </Col>
                   <Col>
@@ -130,6 +137,7 @@ export default class UserLogin extends Component {
                   </Col>
                 </Row>
 
+                
 
                 <Row style={styles.formItem}>
                   <Button
@@ -140,14 +148,13 @@ export default class UserLogin extends Component {
                     登 录
                   </Button>
                 </Row>
-                <Row style={styles.formItem}>
-                  <Button
-                    type="primary"
-                    onClick={this.handleSubmit}
-                    style={styles.submitBtn}
-                  >
-                    注 册
-                  </Button>
+
+                <Row className="tips" style={styles.tips}>
+                  <a href={`${window.location.origin}/#/register`} style={styles.link}>
+                    立即注册
+                  </a>
+                  
+                  
                 </Row>
               </div>
             </IceFormBinderWrapper>
@@ -218,4 +225,7 @@ const styles = {
     color: '#dcd6d6',
     margin: '0 8px',
   },
+  row:{
+    marginLeft:'20px'
+  }
 };
