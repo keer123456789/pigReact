@@ -12,10 +12,13 @@ export default class Home extends Component {
     this.state = {};
   }
   componentWillMount() {
-    const result = cookie.load('status');
-
-    if (result != 1) {
-      window.location.href = `${window.location.origin}/#/login`;
+    const userid=cookie.load("userid");
+    const password=cookie.load("password");
+    const address=cookie.load("address");
+    if(userid!=null&&password!=null&&address!=null){
+      
+    }else{
+      window.location.href =  `${window.location.origin}/#/login`;
     }
   }
   render() {

@@ -11,10 +11,11 @@ import {
   Button, Dialog,
 } from '@icedesign/base';
 import Operation from '../../../../api/api';
-
+import cookie from 'react-cookies';
 import Load from '../../../load';
 
-const { addPig, pigstylist } = Operation;
+
+const { addPig, pigstylist,get721 } = Operation;
 const { Row, Col } = Grid;
 export default class CreateActivityForm extends Component {
   static displayName = 'CreateActivityForm';
@@ -25,7 +26,7 @@ export default class CreateActivityForm extends Component {
       dialog: false,
       pigstylist: [],
       value: {
-        ERC721ID: Math.floor((Math.random() * ((9999999999999 - 1000000000000) + 1)) + 1000000000000).toString(),
+        ERC721ID: '',
         earId: new Date().getTime().toString(),
         breed: '',
         column: '',
@@ -70,12 +71,26 @@ export default class CreateActivityForm extends Component {
       } else {
         const fromvalue = value;
         fromvalue.pigstyId = athis.dataselect.value;
-        console.log(fromvalue)
-        const result = await addPig(fromvalue);
-        if (result.message === 'success') {
-          athis.setState({
-            dialog: true,
-          });
+        console.log(fromvalue);
+        console.log(value);
+
+        const request={};
+        request.breed=fromvalue.breed;
+        request.earId=fromvalue.earId;
+        request.pigHouse=fromvalue.pigstyId;
+        request.address=cookie.load("address");
+        request.password=cookie.load("password");
+        console.log(request);
+        const res = await get721(request);
+        console.log(res);
+        if(res.message ==='success'){
+          fromvalue.ERC721ID=res.data;
+          const result = await addPig(fromvalue);
+          if (result.message === 'success') {
+            athis.setState({
+              dialog: true,
+            });
+          }
           setTimeout(() => {
             athis.setState({
               dialog: false,

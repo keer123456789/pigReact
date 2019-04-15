@@ -14,8 +14,11 @@ export default class Login extends Component {
     const userid=cookie.load("userid");
     const password=cookie.load("password");
     const address=cookie.load("address");
+    console.log(userid);
+    console.log(password);
+    console.log(address);
     if(userid!=null&&password!=null&&address!=null){
-      
+      window.location.href =  `${window.location.origin}/#/manage/company`
     }else{
       window.location.href =  `${window.location.origin}/#/login`;
     }

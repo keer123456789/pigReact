@@ -11,18 +11,19 @@ import Pigsty from './pages/Pigsty';
 import PigstyDetail from './pages/PigstyDetail';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import Setenv from './pages/Setenv';
 import Register1 from './pages/Register1';
-
 
 const routerConfig = [
   {
-    path: '/login',
-    component: Login,
+    path: '/Piggery/pigsty/detail',
+    layout: BasicLayout,
+    component: PigstyDetail,
   },
   {
-    path: '/produce/show',
+    path: '/quickchech/pigsty/detail',
     layout: BasicLayout,
-    component: DisplayBoar,
+    component: PigstyDetail,
   },
   {
     path: '/quickchech/show',
@@ -40,14 +41,13 @@ const routerConfig = [
     component: Pigsty,
   },
   {
-    path: '/quickchech/pigsty/detail',
+    path: '/produce/show',
     layout: BasicLayout,
-    component: PigstyDetail,
+    component: DisplayBoar,
   },
   {
-    path: '/Piggery/pigsty/detail',
-    layout: BasicLayout,
-    component: PigstyDetail,
+    path: '/login',
+    component: Login,
   },
   {
     path: '/manage/company',
@@ -57,6 +57,11 @@ const routerConfig = [
   {
     path: '/register',
     component: Register1,
+  },
+  {
+    path: '/Setenv',
+    layout: BasicLayout,
+    component: Setenv,
   },
   {
     path: '*',

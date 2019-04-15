@@ -47,7 +47,11 @@ const asideMenuConfig = [
     icon: 'task',
     children: [{ name: '后备公猪区', path: '/produce/show' }],
   },
-
+  {
+    name: '配  置',
+    path: '/Setenv',
+    icon: 'home',
+  },
 ];
 
 export { headerMenuConfig, asideMenuConfig };

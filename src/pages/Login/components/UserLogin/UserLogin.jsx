@@ -9,6 +9,7 @@ import {
 import IceIcon from '@icedesign/icon';
 import './UserLogin.scss';
 import Operations from '../../../../api/api';
+import cookie from 'react-cookies';
 
 const { login } = Operations;
 const { Row, Col } = Grid;
@@ -43,7 +44,10 @@ export default class UserLogin extends Component {
         const result = await login(value);
         console.log(result);
         if (result.message === 'success') {
-          window.location.href = `${window.location.origin}/#/`;
+          cookie.save("userid",value.account);
+          cookie.save("address",value.address);
+          cookie.save("password",value.password);
+          window.location.href = `${window.location.origin}/#/manage/company`;
         }else{
 
         }

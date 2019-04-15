@@ -8,6 +8,11 @@ const displaypig = () => {
     });
 };
 
+const get721 = (value) =>{
+  return post('http://127.0.0.1:8080/getPigERC721ID',{
+    data:value
+  });
+}
 
 const addPig = (value) => {
   return post('http://127.0.0.1:8080/addpig', {
@@ -68,6 +73,16 @@ const pigstylist = () => {
 
 
 
+/**
+ * 配置环境的信息
+ * @param {*} value 
+ */
+const setEnv=(value)=>{
+  return post('http://127.0.0.1:8080/setEnv',{
+    data:value,
+  });
+}
+
 
 
 
@@ -102,4 +117,6 @@ export default {
   addPigsty,
   pigstylist,
   register,
+  get721,
+  setEnv,
 };
