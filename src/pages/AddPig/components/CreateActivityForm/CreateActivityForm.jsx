@@ -26,7 +26,7 @@ export default class CreateActivityForm extends Component {
       dialog: false,
       pigstylist: [],
       value: {
-        ERC721ID: '',
+        tokenId: '',
         earId: new Date().getTime().toString(),
         breed: '',
         column: '',
@@ -51,7 +51,7 @@ export default class CreateActivityForm extends Component {
   reset = () => {
     this.setState({
       value: {
-        ERC721ID: this.state.value.ERC721ID,
+        tokenId: this.state.value.tokenId,
         earId: this.state.value.earId,
         breed: '',
         column: '',
@@ -84,7 +84,7 @@ export default class CreateActivityForm extends Component {
         const res = await get721(request);
         console.log(res);
         if(res.message ==='success'){
-          fromvalue.ERC721ID=res.data;
+          fromvalue.tokenId=res.data;
           const result = await addPig(fromvalue);
           if (result.message === 'success') {
             athis.setState({

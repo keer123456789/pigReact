@@ -95,13 +95,46 @@ const register =(value)=>{
   })
 }
 
-// mock
+/**
+ * 登录
+ * @param  value 
+ */
 const login = (value) => {
   // cookie.save('account', value.account);
   return post('http://127.0.0.1:8080/login', {
     data: value,
   });
 };
+
+/**
+ * 创建树莓派资产
+ * @param {*} value 
+ */
+const createPiAsset =(value)=>{
+  return post('http://127.0.0.1:8080/createRaspberryAsset',{
+    data:value,
+  })
+}
+
+/**
+ * 获得nodemcuIP
+ */
+const getNodeMcuIP=()=>{
+  return get('http://127.0.0.1:8080/getNodeMcuIp')
+  .then((resp) => {
+    return resp.data;
+  });
+}
+
+const getAllRaspberry=()=>{
+  return get('http://127.0.0.1:8080/getAllRaspberry')
+  .then((resp)=>{
+    return resp.data;
+  });
+}
+
+
+
 
 
 export default {
@@ -119,4 +152,8 @@ export default {
   register,
   get721,
   setEnv,
+  createPiAsset,
+  getNodeMcuIP,
+  getAllRaspberry,
+
 };
