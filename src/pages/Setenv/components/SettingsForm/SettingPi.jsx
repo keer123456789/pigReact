@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Dialog, Button, Input ,Select} from '@icedesign/base';
+import { Table, Dialog, Button, Input ,Select,Feedback} from '@icedesign/base';
 import Operation from '../../../../api/api';
 import IceContainer from  '@icedesign/container';
 import {
@@ -89,13 +89,17 @@ export default class SettingPi extends Component {
     };
 
     printf = (index) => {
-      const mac = this.state.dataSource[index].PiMac.toString();
-      const ip = this.state.dataSource[index].PiIp.toString();
-      this.setState({
-        dialog: true,
-        PiMac: mac,
-        PiIp: ip,
-      });
+      if(this.state.dataSource[index].PiStatus==='未注册'){
+        const mac = this.state.dataSource[index].PiMac.toString();
+        const ip = this.state.dataSource[index].PiIp.toString();
+        this.setState({
+          dialog: true,
+          PiMac: mac,
+          PiIp: ip,
+        });
+      }else{
+        Feedback.toast.error("不能重复注册！！！！")
+      }
     
       };
 

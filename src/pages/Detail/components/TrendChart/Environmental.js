@@ -34,10 +34,10 @@ class Environmental extends React.Component {
       temperature = [];
     const data = this.state.data;
     for (let i = 0; i < this.state.data.length; i++) {
-      datetime.push(data[i].datetime);
+      datetime.push(data[i].time);
       temperature.push(parseFloat(data[i].temperature));
       humidity.push(parseFloat(data[i].humidity));
-      CO2.push(parseFloat(data[i].co2));
+      CO2.push(parseFloat(data[i].CO2));
     }
     const config = {
       credits: {

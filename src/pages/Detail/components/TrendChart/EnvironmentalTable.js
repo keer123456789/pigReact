@@ -25,8 +25,8 @@ export default class EnvironmentalTable extends Component {
           hasBorder={false}
           className="custom-table"
         >
-          <Table.Column width={100} title="时间" dataIndex="datetime" />
-          <Table.Column width={100} title="二氧化碳(CO2)" dataIndex="co2" />
+          <Table.Column width={100} title="时间" dataIndex="time" />
+          <Table.Column width={100} title="二氧化碳(CO2)" dataIndex="CO2" />
           <Table.Column width={100} title="温度(temperature)" dataIndex="temperature" />
           <Table.Column width={100} title="湿度(humidity)" dataIndex="humidity" />
         </Table>

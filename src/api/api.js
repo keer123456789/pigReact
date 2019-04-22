@@ -51,9 +51,9 @@ const pigsty = () => {
 };
 
 const showEnvironmentalMin = (id) => {
-  return get(`http://172.16.1.170:8080/getPigHouseEnv/${id}`)
+  return get(`http://127.0.0.1:8080/getPigHouseEnv/${id}`)
     .then((resp) => {
-      return resp;
+      return resp.data;
     });
 };
 // 添加猪舍信息
