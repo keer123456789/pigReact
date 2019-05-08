@@ -9,11 +9,12 @@ import {
 } from '@icedesign/form-binder';
 import './Setting.scss';
 import Operation from '../../../../api/api';
+import cookie from 'react-cookies';
 
-const{setEnv}=Operation;
+const{setFarmInfo}=Operation;
 const { Row, Col } = Grid;
 
-export default class SettingsForm extends Component {
+export default class SettingInfo extends Component {
   static displayName = 'SettingsForm';
 
   static propTypes = {};
@@ -39,7 +40,8 @@ export default class SettingsForm extends Component {
   validateAllFormField = () => {
     this.refs.form.validateAll(async(errors, values) => {
       console.log(values);
-      const res =await setEnv(values);
+      values.address=cookie.load('address');
+      const res =await setFarmInfo(values);
       console.log(res);
       if(res.message==='success'){
         Feedback.toast.success('修改成功！！！！');
@@ -57,80 +59,58 @@ export default class SettingsForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>基本设置</h2>
+              <h2 style={styles.formTitle}>养殖场基本设置</h2>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  温度最大值：
+                  养殖场名称：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="temMax" required max={10} message="必填">
-                    <Input size="large" placeholder="27.0" />
+                  <IceFormBinder name="farmName" required max={10} message="必填">
+                    <Input size="large" placeholder="与营业执照一致" />
                   </IceFormBinder>
-                  <IceFormError name="temMax" />
+                  <IceFormError name="farmName" />
                 </Col>
               </Row>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  温度最小值：
+                  养殖场位置：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="temMin" required max={10} message="必填">
-                    <Input size="large" placeholder="27.0" />
+                  <IceFormBinder name="farmLocation" required max={10} message="必填">
+                    <Input size="large" placeholder="与营业执照一致" />
                   </IceFormBinder>
-                  <IceFormError name="temMin" />
+                  <IceFormError name="farmLocation" />
                 </Col>
               </Row>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  湿度最大值：
+                  养殖场法人代表：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="HumMax" required max={10} message="必填">
-                    <Input size="large" placeholder="27.0" />
+                  <IceFormBinder name="farmPerson" required max={10} message="必填">
+                    <Input size="large" placeholder="与营业执照一致" />
                   </IceFormBinder>
-                  <IceFormError name="HumMax" />
+                  <IceFormError name="farmPerson" />
                 </Col>
               </Row>
 
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  湿度最小值：
+                  统一社会信用代码：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="HumMin" required max={10} message="必填">
-                    <Input size="large" placeholder="27.0" />
+                  <IceFormBinder name="farmID" required max={10} message="必填">
+                    <Input size="large" placeholder="营业执照右上角" />
                   </IceFormBinder>
-                  <IceFormError name="HumMin" />
+                  <IceFormError name="farmID" />
                 </Col>
               </Row>
 
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
-                  CO2最大值：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder name="CO2Max" required max={10} message="必填">
-                    <Input size="large" placeholder="27.0" />
-                  </IceFormBinder>
-                  <IceFormError name="CO2Max" />
-                </Col>
-              </Row>
-
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
-                  CO2最小值：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder name="CO2Min" required max={10} message="必填">
-                    <Input size="large" placeholder="27.0" />
-                  </IceFormBinder>
-                  <IceFormError name="CO2Min" />
-                </Col>
-              </Row>
+              
             </div>
           </IceFormBinderWrapper>
 
@@ -143,6 +123,7 @@ export default class SettingsForm extends Component {
                 onClick={this.validateAllFormField}
               >
                 提 交
+                
               </Button>
             </Col>
           </Row>

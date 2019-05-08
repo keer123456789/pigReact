@@ -3,6 +3,9 @@ import TableFilterPi from './TableFilterPi';
 import SettingEnv from './SettingEnv';
 import TableFilterEnv from './TableFilterEnv'
 import SettingPi from './SettingPi'
+import TableFilterInfo from './TableFilterInfo'
+
+import SettingInfo from './SettingInfo';
 
 export default class SettingsForm extends Component{
   static displayName = "SettingsForm";
@@ -14,6 +17,8 @@ export default class SettingsForm extends Component{
     super(props);
     this.state = {};
   }
+  
+ 
 
   render() {
     return (
@@ -23,6 +28,9 @@ export default class SettingsForm extends Component{
         <br></br>
         <TableFilterEnv/>
         <SettingEnv />
+        <br></br>
+        <TableFilterInfo/>
+        <SettingInfo />
       </div>
     );
   }

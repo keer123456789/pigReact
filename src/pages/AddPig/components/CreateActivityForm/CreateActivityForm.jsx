@@ -65,39 +65,40 @@ export default class CreateActivityForm extends Component {
 
   submit = () => {
     const athis = this;
-    this.formRef.validateAll(async (error, value) => {
+    this.formRef.validateAll( (error, value) => {
       if (error) {
         // 处理表单报错
       } else {
-        const fromvalue = value;
-        fromvalue.pigstyId = athis.dataselect.value;
-        console.log(fromvalue);
-        console.log(value);
+        setTimeout(async() => {
+          const fromvalue = value;
+          fromvalue.pigstyId = athis.dataselect.value;
+          console.log(fromvalue);
+          console.log(value);
 
-        const request={};
-        request.breed=fromvalue.breed;
-        request.earId=fromvalue.earId;
-        request.pigHouse=fromvalue.pigstyId;
-        request.address=cookie.load("address");
-        request.password=cookie.load("password");
-        console.log(request);
-        const res = await get721(request);
-        console.log(res);
-        if(res.message ==='success'){
-          fromvalue.tokenId=res.data;
-          const result = await addPig(fromvalue);
-          if (result.message === 'success') {
-            athis.setState({
-              dialog: true,
-            });
-          }
-          setTimeout(() => {
-            athis.setState({
-              dialog: false,
-            });
-            window.location.reload();
-          }, 5000);
-        }
+          const request={};
+          request.breed=fromvalue.breed;
+          request.earId=fromvalue.earId;
+          request.pigHouse=fromvalue.pigstyId;
+          request.address=cookie.load("address");
+          request.password=cookie.load("password");
+          console.log(request);
+          const res = await get721(request);
+          console.log(res);
+          if(res.message ==='success'){
+            fromvalue.tokenId=res.data;
+            const result = await addPig(fromvalue);
+            if (result.message === 'success') {
+              athis.setState({
+                dialog: true,
+              });
+            }
+            
+              athis.setState({
+                dialog: false,
+              });
+              
+          }window.location.reload();
+        }, 10000);
       }
     });
   };

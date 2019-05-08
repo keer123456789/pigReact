@@ -82,6 +82,22 @@ const setEnv=(value)=>{
     data:value,
   });
 }
+/**
+ * 设置养殖场基本信息
+ * @param {*} value 
+ */
+const setFarmInfo=(value)=>{
+  return post('http://127.0.0.1:8080/setFarmInfo',{
+    data:value,
+  });
+}
+
+const getFarmInfo=(value)=>{
+  return get(`http://127.0.0.1:8080/${value}`)
+  .then((resp) => {
+    return resp.data;
+  });
+}
 
 
 
@@ -155,5 +171,6 @@ export default {
   createPiAsset,
   getNodeMcuIP,
   getAllRaspberry,
-
+  setFarmInfo,
+  getFarmInfo
 };
