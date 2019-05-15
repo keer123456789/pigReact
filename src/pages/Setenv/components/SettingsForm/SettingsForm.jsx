@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import TableFilterPi from './TableFilterPi';
 import SettingEnv from './SettingEnv';
 import TableFilterEnv from './TableFilterEnv'
-import SettingPi from './SettingPi'
-import TableFilterInfo from './TableFilterInfo'
-
+import SettingPi from './SettingPi';
+import TableFilterInfo from './TableFilterInfo';
+import Operation from '../../../../api/api'
 import SettingInfo from './SettingInfo';
+import ShowFarmInfo from './ShowFarmInfo';
+import cookie from 'react-cookies';
 
+const {getFarmInfo} = Operation;
 export default class SettingsForm extends Component{
   static displayName = "SettingsForm";
 
@@ -15,9 +18,27 @@ export default class SettingsForm extends Component{
   static defaultProps ={};
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data:""
+    };
   }
-  
+
+  componentWillMount=async()=>{
+    const res= await getFarmInfo(cookie.load('address'));
+    this.setState({
+        data:res
+    })
+  }
+  print=()=>{
+    if(this.state.data.message==='success'){
+      return (
+        <ShowFarmInfo />
+        )
+    }else{
+      return (<SettingInfo />)
+    }
+
+  }
  
 
   render() {
@@ -30,7 +51,8 @@ export default class SettingsForm extends Component{
         <SettingEnv />
         <br></br>
         <TableFilterInfo/>
-        <SettingInfo />
+        {this.print()}
+        {/* <SettingInfo /> */}
       </div>
     );
   }

@@ -93,10 +93,8 @@ const setFarmInfo=(value)=>{
 }
 
 const getFarmInfo=(value)=>{
-  return get(`http://127.0.0.1:8080/${value}`)
-  .then((resp) => {
-    return resp.data;
-  });
+  return get(`http://127.0.0.1:8080/getFarmInfo/${value}`);
+  
 }
 
 
@@ -149,7 +147,9 @@ const getAllRaspberry=()=>{
   });
 }
 
-
+const setBigchainDBKey=(value)=>{
+  return get(`http://127.0.0.1:8080/setBigchainDBKey/${value}`)
+}
 
 
 
@@ -172,5 +172,6 @@ export default {
   getNodeMcuIP,
   getAllRaspberry,
   setFarmInfo,
-  getFarmInfo
+  getFarmInfo,
+  setBigchainDBKey,
 };

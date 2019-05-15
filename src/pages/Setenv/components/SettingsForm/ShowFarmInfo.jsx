@@ -33,27 +33,27 @@ export default class SettingInfo extends Component {
     };
   }
 
-  componentWillMount(){
-      const res=getFarmInfo(cookie.load("address"));
+  componentWillMount=async()=>{
+      const res=await getFarmInfo(cookie.load("address"));
       this.setState({
-          farmID:res.farmID,
-          farmName:res.farmName,
-          farmLocation:res.farmLocation,
-          farmPerson:res.farmPerson,
+          farmID:res.data.farmID,
+          farmName:res.data.farmName,
+          farmLocation:res.data.farmLocation,
+          farmPerson:res.data.farmPerson,
       })
   }
 
-  validateAllFormField = () => {
-    this.refs.form.validateAll(async(errors, values) => {
-      console.log(values);
-      values.address=cookie.load('address');
-      const res =await setFarmInfo(values);
-      console.log(res);
-      if(res.message==='success'){
-        Feedback.toast.success('修改成功！！！！');
-      }
-    });
-  };
+  // validateAllFormField = () => {
+  //   this.refs.form.validateAll(async(errors, values) => {
+  //     console.log(values);
+  //     values.address=cookie.load('address');
+  //     const res =await setFarmInfo(values);
+  //     console.log(res);
+  //     if(res.message==='success'){
+  //       Feedback.toast.success('修改成功！！！！');
+  //     }
+  //   });
+  // };
 
   render() {
     return (
@@ -68,22 +68,22 @@ export default class SettingInfo extends Component {
               <h2 style={styles.formTitle}>养殖场基本信息</h2>
 
               <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
+                <Col xxs="6" s="6" l="6" style={styles.label}>
                   养殖场名称：{this.state.farmName}
                 </Col> 
               </Row>
               <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
+                <Col xxs="6" s="6" l="6" style={styles.label}>
                   养殖场位置：{this.state.farmLocation}
                 </Col> 
               </Row>
               <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
+                <Col xxs="6" s="6" l="6" style={styles.label}>
                   养殖场法人代表：{this.state.farmPerson}
                 </Col>   
               </Row>
               <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
+                <Col xxs="6" s="6" l="6" style={styles.label}>
                   统一社会信用代码：{this.state.farmID}
                 </Col>
               </Row>  
@@ -98,6 +98,7 @@ export default class SettingInfo extends Component {
 const styles = {
   label: {
     textAlign: 'right',
+    width:'50%'
   },
   formContent: {
     width: '100%',
