@@ -70,7 +70,7 @@ export default class Home extends Component {
             width={100}
             title="目前状态"
             dataIndex="status"
-            cell={row => (row || ('正常'))}
+            // cell={row => (row || ('正常'))}
             align="center"
           />
           <Table.Column
