@@ -1,38 +1,48 @@
 import cookie from 'react-cookies';
 import { get, post } from './request.js';
 
+
+const ip="http://127.0.0.1:8080";
+
+/**
+ * 获取全部猪的信息
+ */
 const displaypig = () => {
-  return get('http://127.0.0.1:8080/getAllPig')
+  return get(`${ip}/getAllPig`)
     .then((res) => {
       return res.data;
     });
 };
 
+/**
+ * 
+ * @param  value 
+ */
 const get721 = (value) =>{
-  return post('http://127.0.0.1:8080/getPigERC721ID',{
+  return post(`${ip}/getPigERC721ID`,{
     data:value
   });
 }
 
 const addPig = (value) => {
-  return post('http://127.0.0.1:8080/addpig', {
+  return post(`${ip}/addpig`, {
     data: value,
   });
 };
 //快查中心列表，没有721ID
 const checkSelect = () => {
-  return get('http://127.0.0.1:8080/getAllPig');
+  return get(`${ip}/getAllPig`);
 };
 // 显示猪的详情
 const showDetail = (id) => {
-  return get(`http://127.0.0.1:8080/getPigInfo/${id}`)
+  return get(`${ip}/getPigInfo/${id}`)
     .then((resp) => {
       return resp.data[0];
     });
 };
 // 显示健康信息
 const showHealthMin = (id) => {
-  return get(`http://172.16.1.170:8080/getPigHealthInfo/${id}`)
+  return get(`${ip}/getPigHealthInfo/${id}`)
     .then((resp) => {
       return resp;
     });
@@ -40,32 +50,32 @@ const showHealthMin = (id) => {
 
 
 const showpiglist = (id) => {
-  return get(`http://127.0.0.1:8080/getPigList/${id}`)
+  return get(`${ip}/getPigList/${id}`)
     .then((resp) => {
       return resp.data;
     });
 };
 // 显示猪舍信息
 const pigsty = () => {
-  return get('http://127.0.0.1:8080/pigHouseList');
+  return get(`${ip}/pigHouseList`);
 };
 
 const showEnvironmentalMin = (id) => {
-  return get(`http://127.0.0.1:8080/getPigHouseEnv/${id}`)
+  return get(`${ip}/getPigHouseEnv/${id}`)
     .then((resp) => {
       return resp.data;
     });
 };
 // 添加猪舍信息
 const addPigsty = (value) => {
-  return post('http://127.0.0.1:8080/addPighouse', {
+  return post(`${ip}/addPighouse`, {
     data: value,
   });
 };
 
 // 显示猪舍ID列表
 const pigstylist = () => {
-  return get('http://127.0.0.1:8080/pigHouseIdList')
+  return get(`${ip}/pigHouseIdList`)
     .then((resp) => {
       return resp.data;
     });
@@ -78,7 +88,7 @@ const pigstylist = () => {
  * @param {*} value 
  */
 const setEnv=(value)=>{
-  return post('http://127.0.0.1:8080/setEnv',{
+  return post(`${ip}/setEnv`,{
     data:value,
   });
 }
@@ -87,13 +97,13 @@ const setEnv=(value)=>{
  * @param {*} value 
  */
 const setFarmInfo=(value)=>{
-  return post('http://127.0.0.1:8080/setFarmInfo',{
+  return post(`${ip}/setFarmInfo`,{
     data:value,
   });
 }
 
 const getFarmInfo=(value)=>{
-  return get(`http://127.0.0.1:8080/getFarmInfo/${value}`);
+  return get(`${ip}/getFarmInfo/${value}`);
   
 }
 
@@ -104,7 +114,7 @@ const getFarmInfo=(value)=>{
  * 用户提交审核
  */
 const register =(value)=>{
-  return post('http://127.0.0.1:8080/register',{
+  return post(`${ip}/register`,{
     data:value,
   })
 }
@@ -115,7 +125,7 @@ const register =(value)=>{
  */
 const login = (value) => {
   // cookie.save('account', value.account);
-  return post('http://127.0.0.1:8080/login', {
+  return post(`${ip}/login`, {
     data: value,
   });
 };
@@ -125,7 +135,7 @@ const login = (value) => {
  * @param {*} value 
  */
 const createPiAsset =(value)=>{
-  return post('http://127.0.0.1:8080/createRaspberryAsset',{
+  return post(`${ip}/createRaspberryAsset`,{
     data:value,
   })
 }
@@ -134,21 +144,21 @@ const createPiAsset =(value)=>{
  * 获得nodemcuIP
  */
 const getNodeMcuIP=()=>{
-  return get('http://127.0.0.1:8080/getNodeMcuIp')
+  return get(`${ip}/getNodeMcuIp`)
   .then((resp) => {
     return resp.data;
   });
 }
 
 const getAllRaspberry=()=>{
-  return get('http://127.0.0.1:8080/getAllRaspberry')
+  return get(`${ip}/getAllRaspberry`)
   .then((resp)=>{
     return resp.data;
   });
 }
 
 const setBigchainDBKey=(value)=>{
-  return get(`http://127.0.0.1:8080/setBigchainDBKey/${value}`)
+  return post(`${ip}/setBigchainDBKey?key=${value}`)
 }
 
 
